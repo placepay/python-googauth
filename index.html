@@ -1,0 +1,346 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>python-googauth – Documentation &mdash; python-googauth 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="python-googauth 0.1.0 documentation" href="#" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="#">python-googauth 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="python-googauth-documentation">
+<h1><tt class="xref py py-mod docutils literal"><span class="pre">python-googauth</span></tt> &#8211; Documentation<a class="headerlink" href="#python-googauth-documentation" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="googauth.generate_code">
+<tt class="descclassname">googauth.</tt><tt class="descname">generate_code</tt><big>(</big><em>secretkey</em>, <em>value=None</em><big>)</big><a class="headerlink" href="#googauth.generate_code" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate OTP code base on value. Value should be a counter value for
+counter based OTP or 30 second time block for time based OTP.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>secretkey</em></td>
+<td>string</td>
+<td>Base 32 secret key.</td>
+</tr>
+<tr class="row-odd"><td><em>value</em></td>
+<td>number</td>
+<td>HOTP value. If <tt class="docutils literal"><span class="pre">None</span></tt> current 30 second time
+block will be used.</td>
+</tr>
+</tbody>
+</table>
+<p>Retruns:</p>
+<p>Six digit otp code.</p>
+<p>Usage:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">googauth</span>
+<span class="n">secret_key</span> <span class="o">=</span> <span class="n">googauth</span><span class="o">.</span><span class="n">generate_secret_key</span><span class="p">()</span>
+<span class="k">print</span> <span class="n">googauth</span><span class="o">.</span><span class="n">generate_code</span><span class="p">(</span><span class="n">secret_key</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="googauth.verify_counter_based">
+<tt class="descclassname">googauth.</tt><tt class="descname">verify_counter_based</tt><big>(</big><em>secretkey</em>, <em>code_attempt</em>, <em>counter</em>, <em>window=3</em><big>)</big><a class="headerlink" href="#googauth.verify_counter_based" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verify a counter based OTP against a secret key. By default the next
+three codes will be check to compensate for synchronization problems.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>secretkey</em></td>
+<td>string</td>
+<td>Base 32 secret key.</td>
+</tr>
+<tr class="row-odd"><td><em>code_attempt</em></td>
+<td>string</td>
+<td>OTP code to be verfied.</td>
+</tr>
+<tr class="row-even"><td><em>counter</em></td>
+<td>number</td>
+<td>Current hotp counter.</td>
+</tr>
+<tr class="row-odd"><td><em>window</em></td>
+<td>number</td>
+<td>Number of codes to check ahead for a match.</td>
+</tr>
+</tbody>
+</table>
+<p>Retruns:</p>
+<p>Counter that matched given code otherwise <tt class="docutils literal"><span class="pre">None</span></tt> if no match is found.</p>
+<p>Usage:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">googauth</span>
+<span class="n">secret_key</span> <span class="o">=</span> <span class="n">googauth</span><span class="o">.</span><span class="n">generate_secret_key</span><span class="p">()</span>
+<span class="k">print</span> <span class="n">googauth</span><span class="o">.</span><span class="n">verify_counter_based</span><span class="p">(</span><span class="n">secret_key</span><span class="p">,</span> <span class="s">&#39;123456&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="googauth.verify_time_based">
+<tt class="descclassname">googauth.</tt><tt class="descname">verify_time_based</tt><big>(</big><em>secretkey</em>, <em>code_attempt</em>, <em>window=3</em><big>)</big><a class="headerlink" href="#googauth.verify_time_based" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verify a time based OTP against a secret key. By default the current
+time, 30 seconds back and forward are checked to compensate for time
+differences. Each code should first be check against previously used codes
+to prevent a code from being reused by an attacker in a MITM attack.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>secretkey</em></td>
+<td>string</td>
+<td>Base 32 secret key.</td>
+</tr>
+<tr class="row-odd"><td><em>code_attempt</em></td>
+<td>string</td>
+<td>OTP code to be verfied.</td>
+</tr>
+<tr class="row-even"><td><em>window</em></td>
+<td>number</td>
+<td>Number of 30 second blocks to check for valid
+codes. This number is divided in half to check previous times and
+future times.</td>
+</tr>
+</tbody>
+</table>
+<p>Retruns:</p>
+<p>Time block that matched given code otherwise <tt class="docutils literal"><span class="pre">None</span></tt> if no match is
+found. This is the valid time divived by 30 not the actual time.</p>
+<p>Usage:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">googauth</span>
+<span class="n">secret_key</span> <span class="o">=</span> <span class="n">googauth</span><span class="o">.</span><span class="n">generate_secret_key</span><span class="p">()</span>
+<span class="k">print</span> <span class="n">googauth</span><span class="o">.</span><span class="n">verify_time_based</span><span class="p">(</span><span class="n">secret_key</span><span class="p">,</span> <span class="s">&#39;123456&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="googauth.generate_secret_key">
+<tt class="descclassname">googauth.</tt><tt class="descname">generate_secret_key</tt><big>(</big><em>length=16</em><big>)</big><a class="headerlink" href="#googauth.generate_secret_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate random 16 character base 32 secret key.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>length</em></td>
+<td>string</td>
+<td>Length of secret key, min 8, max 128.</td>
+</tr>
+</tbody>
+</table>
+<p>Retruns:</p>
+<p>Random 16 character base 32 secret key.</p>
+<p>Usage:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">googauth</span>
+<span class="k">print</span> <span class="n">googauth</span><span class="o">.</span><span class="n">generate_secret_key</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="googauth.get_otpauth_url">
+<tt class="descclassname">googauth.</tt><tt class="descname">get_otpauth_url</tt><big>(</big><em>user</em>, <em>domain</em>, <em>secret_key</em><big>)</big><a class="headerlink" href="#googauth.get_otpauth_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate otpauth url from secret key.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>user</em></td>
+<td>string</td>
+<td>User.</td>
+</tr>
+<tr class="row-odd"><td><em>domain</em></td>
+<td>string</td>
+<td>Domain.</td>
+</tr>
+<tr class="row-even"><td><em>secret_key</em></td>
+<td>string</td>
+<td>Base 32 secret key.</td>
+</tr>
+</tbody>
+</table>
+<p>Retruns:</p>
+<p>Otpauth url.</p>
+<p>Usage:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">googauth</span>
+<span class="n">secret_key</span> <span class="o">=</span> <span class="n">googauth</span><span class="o">.</span><span class="n">generate_secret_key</span><span class="p">()</span>
+<span class="k">print</span> <span class="n">googauth</span><span class="o">.</span><span class="n">get_otpauth_url</span><span class="p">(</span><span class="s">&#39;user&#39;</span><span class="p">,</span> <span class="s">&#39;domain.com&#39;</span><span class="p">,</span> <span class="n">secret_key</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="googauth.get_barcode_url">
+<tt class="descclassname">googauth.</tt><tt class="descname">get_barcode_url</tt><big>(</big><em>user</em>, <em>domain</em>, <em>secret_key</em><big>)</big><a class="headerlink" href="#googauth.get_barcode_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a url to a QR barcode image from secret key using Google chart
+API.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>user</em></td>
+<td>string</td>
+<td>User.</td>
+</tr>
+<tr class="row-odd"><td><em>domain</em></td>
+<td>string</td>
+<td>Domain.</td>
+</tr>
+<tr class="row-even"><td><em>secret_key</em></td>
+<td>string</td>
+<td>Base 32 secret key.</td>
+</tr>
+</tbody>
+</table>
+<p>Retruns:</p>
+<p>QR barcode image url.</p>
+<p>Usage:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">googauth</span>
+<span class="n">secret_key</span> <span class="o">=</span> <span class="n">googauth</span><span class="o">.</span><span class="n">generate_secret_key</span><span class="p">()</span>
+<span class="k">print</span> <span class="n">googauth</span><span class="o">.</span><span class="n">get_barcode_url</span><span class="p">(</span><span class="s">&#39;user&#39;</span><span class="p">,</span> <span class="s">&#39;domain.com&#39;</span><span class="p">,</span> <span class="n">secret_key</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="#">python-googauth 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, RentShare Inc.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
