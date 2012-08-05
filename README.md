@@ -19,6 +19,7 @@ Documentation
 
 http://rentshare.github.com/python-googauth
 
+
 Example
 -------
 
@@ -29,6 +30,7 @@ code = googauth.generate_code(secret_key)
 value = googauth.verify_time_based(secret_key, code)
 assert value != None
 ```
+
 
 License
 -------
