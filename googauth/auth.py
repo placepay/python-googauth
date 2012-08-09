@@ -34,7 +34,7 @@ def generate_code(secretkey, value=None):
     value = struct.pack('>q', value)
 
     # Decode base32 key to bytes
-    secretkey = base64.b32decode(secretkey)
+    secretkey = base64.b32decode(secretkey.upper())
 
     # Generate HMAC-SHA1 from time based on secret key
     hash = hmac.new(secretkey, value, hashlib.sha1).digest()
