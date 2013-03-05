@@ -3,6 +3,26 @@ import os
 import base64
 import urllib
 
+def _generate_random_bytes():
+    """Generate random bytes.
+
+    Returns:
+
+    Random bytes from sha512 hash.
+    """
+    # Generate sha1 hash of 8192 random bytes
+    sha_hash = hashlib.sha512()
+    sha_hash.update(os.urandom(8192))
+    byte_hash = sha_hash.digest()
+
+    # Rehash
+    for i in xrange(6):
+        sha_hash = hashlib.sha512()
+        sha_hash.update(byte_hash)
+        byte_hash = sha_hash.digest()
+    
+    return byte_hash
+
 def generate_secret_key(length=16):
     """Generate random 16 character base 32 secret key.
 
@@ -14,7 +34,7 @@ def generate_secret_key(length=16):
 
         "*length*", "string", "Length of secret key, min 8, max 128."
 
-    Retruns:
+    Returns:
 
     Random 16 character base 32 secret key.
 
@@ -26,18 +46,11 @@ def generate_secret_key(length=16):
     if length < 8 or length > 128:
         raise TypeError('Secret key length is invalid.')
 
-    # Generate sha1 hash of 8192 random bytes
-    sha_hash = hashlib.sha512()
-    sha_hash.update(os.urandom(8192))
-    hexhash = sha_hash.hexdigest()
+    byte_hash = _generate_random_bytes()
+    if length > 102:
+        byte_hash += _generate_random_bytes()
 
-    # Rehash
-    for i in xrange(6):
-        sha_hash = hashlib.sha512()
-        sha_hash.update(hexhash)
-        hexhash = sha_hash.hexdigest()
-
-    return base64.b32encode(hexhash)[:length]
+    return base64.b32encode(byte_hash)[:length]
 
 def get_otpauth_url(user, domain, secret_key):
     """Generate otpauth url from secret key.
@@ -52,7 +65,7 @@ def get_otpauth_url(user, domain, secret_key):
         "*domain*", "string", "Domain."
         "*secret_key*", "string", "Base 32 secret key."
 
-    Retruns:
+    Returns:
 
     Otpauth url.
 
@@ -79,7 +92,7 @@ def get_barcode_url(user, domain, secret_key):
         "*domain*", "string", "Domain."
         "*secret_key*", "string", "Base 32 secret key."
 
-    Retruns:
+    Returns:
 
     QR barcode image url.
 

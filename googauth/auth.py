@@ -18,7 +18,7 @@ def generate_code(secretkey, value=None):
         "*value*", "number", "HOTP value. If ``None`` current 30 second time
         block will be used."
 
-    Retruns:
+    Returns:
 
     Six digit otp code.
 
@@ -66,7 +66,7 @@ def verify_counter_based(secretkey, code_attempt, counter, window=3):
         "*counter*", "number", "Current hotp counter."
         "*window*", "number", "Number of codes to check ahead for a match."
 
-    Retruns:
+    Returns:
 
     Counter that matched given code otherwise ``None`` if no match is found.
 
@@ -107,7 +107,7 @@ def verify_time_based(secretkey, code_attempt, window=3):
         codes. This number is divided in half to check previous times and
         future times."
 
-    Retruns:
+    Returns:
 
     Time block that matched given code otherwise ``None`` if no match is
     found. This is the valid time divived by 30 not the actual time.

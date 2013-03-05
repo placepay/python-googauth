@@ -1,4 +1,4 @@
-python-googauth v0.1.0
+python-googauth v0.1.1
 ======================
 
 Description

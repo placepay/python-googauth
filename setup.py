@@ -1,12 +1,12 @@
 from distutils.core import setup
 
 setup(name='googauth',
-      version='0.1.0',
+      version='0.1.1',
       description='Python library for Google Authenticator.',
       author='RentShare Inc',
       url='https://github.com/rentshare/python-googauth',
-      download_url='https://github.com/downloads/rentshare/' + \
-                   'python-googauth/python-googauth-0.1.0.tar.gz',
+      download_url='https://github.com/rentshare/python-googauth/' + \
+                   'archive/0.1.1.zip',
       keywords='googauth, google authenticator, otp',
       packages=['googauth'],
       license='MIT',
